@@ -5,33 +5,33 @@
 See: .planning/PROJECT.md (updated 2026-02-11)
 
 **Core value:** Quickly see what filament you have — by color, brand, and material — so you never guess what's on the shelf.
-**Current focus:** Phase 1 complete — ready for Phase 2 (Inventory Management)
+**Current focus:** Phase 2 complete — ready for Phase 3 (Visual Display)
 
 ## Current Position
 
 Phase: 2 of 4 (Inventory Management)
-Plan: 1 of 2
-Status: In Progress
-Last activity: 2026-02-12 — Completed plan 02-01 (Spool Form and Add Page)
+Plan: 2 of 2
+Status: Complete
+Last activity: 2026-02-12 — Completed plan 02-02 (Home Page, Edit, Delete & Filters)
 
-Progress: [█████████████████████] 50%
+Progress: [███████████████████████] 100%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 4
+- Total plans completed: 5
 - Average duration: 3 min
-- Total execution time: 0.3 hours
+- Total execution time: 0.4 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 01-data-foundation | 3 | 9 min | 3 min |
-| 02-inventory-management | 1 | 3 min | 3 min |
+| 02-inventory-management | 2 | 8 min | 4 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (4 min), 01-02 (3 min), 01-03 (2 min), 02-01 (3 min)
+- Last 5 plans: 01-02 (3 min), 01-03 (2 min), 02-01 (3 min), 02-02 (5 min)
 - Trend: Consistent velocity
 
 *Updated after each plan completion*
@@ -49,7 +49,7 @@ Recent decisions affecting current work:
 - **01-01**: Use crypto.randomUUID for primary keys (globally unique, no coordination needed)
 - **01-01**: Store dates as ISO text strings in SQLite (human-readable, sortable)
 - **01-01**: Enable WAL mode on SQLite (better concurrent access)
-- **01-01**: Default status='sealed', initialWeight=1000g (sensible defaults for new spools)
+- **01-01**: Default status='in_use', initialWeight=1000g (sensible defaults for new spools)
 - **01-02**: Organized colors by Bambu Lab categories (Basic, Matte, Silk, Marble, Glow, Sparkle, Support)
 - **01-02**: Provided dual helper functions: formatMaterial() for full display, getMaterialDisplay() for compact UI
 - **01-03**: Use Zod for runtime validation of user input (type-safe, composable schemas)
@@ -57,9 +57,13 @@ Recent decisions affecting current work:
 - **01-03**: Transform undefined to null for optional fields (consistent with SQLite nulls)
 - **01-03**: Call revalidatePath('/') after mutations for Next.js cache invalidation
 - **02-01**: Use plain React useState instead of form libraries (sufficient for current scope)
-- **02-01**: Visual Bambu Lab palette with 32x32px clickable swatches grouped by category
-- **02-01**: Dual color input: palette selection + manual override inputs that sync
 - **02-01**: Reusable form components accept initialData for edit mode and onSubmit callback for flexibility
+- **02-02**: Default spool status is "Open" (in_use) not "Sealed" — user preference
+- **02-02**: Brand is a dropdown with 10 preset brands, not free text
+- **02-02**: Modifier is required (not optional) with "Basic" as the standard option
+- **02-02**: Color palette cascades: brand → material → modifier → colors (only real product combos)
+- **02-02**: Filter menu uses dropdowns dynamically populated from inventory data
+- **02-02**: Card grid layout with color swatch headers (pulled forward from Phase 3)
 
 ### Pending Todos
 
@@ -72,5 +76,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-12
-Stopped at: Completed 02-01-PLAN.md (Spool Form and Add Page)
-Resume file: .planning/phases/02-inventory-management/02-01-SUMMARY.md
+Stopped at: Completed Phase 2 (Inventory Management)
+Resume file: .planning/phases/02-inventory-management/02-02-SUMMARY.md
