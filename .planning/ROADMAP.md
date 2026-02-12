@@ -28,12 +28,12 @@ Decimal phases appear between their surrounding integers in numeric order.
   2. Bambu Lab color palette available with accurate hex values as TypeScript constants
   3. Material types available as validated dropdown options (PLA, PETG, ABS, TPU, ASA, Nylon)
   4. Server actions can read and write spool data via type-safe Drizzle queries
-**Plans**: TBD
+**Plans:** 3 plans
 
 Plans:
-- [ ] 01-01: TBD
-- [ ] 01-02: TBD
-- [ ] 01-03: TBD
+- [ ] 01-01-PLAN.md — Bootstrap Next.js with Drizzle/SQLite and define spool schema
+- [ ] 01-02-PLAN.md — Bambu Lab color palette and material type constants
+- [ ] 01-03-PLAN.md — Server actions for spool CRUD with Zod validation
 
 ### Phase 2: Inventory Management
 **Goal**: User can create, edit, and delete filament spools with full field support
@@ -90,7 +90,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Data Foundation | 0/TBD | Not started | - |
+| 1. Data Foundation | 0/3 | Planned | - |
 | 2. Inventory Management | 0/TBD | Not started | - |
 | 3. Visual Display | 0/TBD | Not started | - |
 | 4. Discovery | 0/TBD | Not started | - |
