@@ -3,20 +3,7 @@
 import { useState, useMemo } from "react";
 import Link from "next/link";
 import type { Spool } from "@/db/schema";
-import { formatMaterial } from "@/lib/materials";
-import { DeleteSpoolButton } from "@/components/DeleteSpoolButton";
-
-const STATUS_LABELS: Record<string, string> = {
-  sealed: "Sealed",
-  in_use: "Open",
-  empty: "Empty",
-};
-
-const STATUS_COLORS: Record<string, { bg: string; text: string; dot: string }> = {
-  sealed: { bg: "#dbeafe", text: "#1e40af", dot: "#3b82f6" },
-  in_use: { bg: "#dcfce7", text: "#166534", dot: "#22c55e" },
-  empty: { bg: "#fee2e2", text: "#991b1b", dot: "#ef4444" },
-};
+import { SpoolCard } from "@/components/SpoolCard";
 
 type Filters = {
   status: string;
@@ -264,81 +251,9 @@ export function SpoolList({ spools }: SpoolListProps) {
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filtered.map((spool) => {
-            const statusStyle = STATUS_COLORS[spool.status] || STATUS_COLORS.in_use;
-            return (
-              <div
-                key={spool.id}
-                className="rounded-xl border border-gray-200 bg-white shadow-sm hover:shadow-md transition-shadow overflow-hidden"
-              >
-                {/* Color swatch header */}
-                <div
-                  style={{
-                    height: "80px",
-                    backgroundColor: spool.colorHex,
-                    borderBottom: "1px solid rgba(0,0,0,0.08)",
-                  }}
-                />
-
-                <div className="p-4">
-                  <div className="flex items-start justify-between mb-2">
-                    <div>
-                      <p className="text-base font-semibold text-gray-900">
-                        {spool.colorName}
-                      </p>
-                      <p className="text-sm text-gray-600">
-                        {spool.brand}
-                      </p>
-                    </div>
-                    <span className="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-semibold text-gray-700">
-                      {formatMaterial(spool.material, spool.modifier)}
-                    </span>
-                  </div>
-
-                  <div className="flex items-center gap-3 text-sm text-gray-500 mb-3">
-                    <span
-                      style={{
-                        display: "inline-flex",
-                        alignItems: "center",
-                        gap: "5px",
-                        padding: "2px 10px",
-                        borderRadius: "9999px",
-                        fontSize: "12px",
-                        fontWeight: 600,
-                        backgroundColor: statusStyle.bg,
-                        color: statusStyle.text,
-                      }}
-                    >
-                      <span
-                        style={{
-                          width: "6px",
-                          height: "6px",
-                          borderRadius: "50%",
-                          backgroundColor: statusStyle.dot,
-                        }}
-                      />
-                      {STATUS_LABELS[spool.status] || spool.status}
-                    </span>
-                    <span>{spool.initialWeight}g</span>
-                    {spool.purchaseDate && <span>{spool.purchaseDate}</span>}
-                  </div>
-
-                  <div className="flex items-center gap-3 pt-3 border-t border-gray-100">
-                    <Link
-                      href={`/spools/${spool.id}/edit`}
-                      className="text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors"
-                    >
-                      Edit
-                    </Link>
-                    <DeleteSpoolButton
-                      spoolId={spool.id}
-                      spoolName={`${spool.brand} ${spool.colorName}`}
-                    />
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+          {filtered.map((spool) => (
+            <SpoolCard key={spool.id} spool={spool} />
+          ))}
         </div>
       )}
     </div>
