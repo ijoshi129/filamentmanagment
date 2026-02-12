@@ -10,7 +10,7 @@ export const spools = sqliteTable("spools", {
   modifier: text("modifier"),
   colorName: text("color_name").notNull(),
   colorHex: text("color_hex").notNull(),
-  status: text("status").notNull().default("sealed"),
+  status: text("status").notNull().default("in_use"),
   initialWeight: integer("initial_weight").notNull().default(1000),
   purchaseDate: text("purchase_date"),
   price: real("price"),

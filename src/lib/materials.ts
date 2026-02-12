@@ -1,7 +1,7 @@
 /**
- * Material Types and Modifiers
+ * Material Types, Modifiers, and Brands
  *
- * Definitions for filament base materials and their modifiers.
+ * Definitions for filament base materials, modifiers, and brands.
  * Used for material selection and display formatting in forms.
  */
 
@@ -16,6 +16,24 @@ export type MaterialModifier = {
   name: string;   // Display name (e.g., "Carbon Fiber", "Silk")
   suffix: string; // Short suffix for display (e.g., "CF", "Silk")
 };
+
+export type Brand = {
+  id: string;
+  name: string;
+};
+
+export const BRANDS: Brand[] = [
+  { id: "bambu-lab", name: "Bambu Lab" },
+  { id: "hatchbox", name: "Hatchbox" },
+  { id: "esun", name: "eSUN" },
+  { id: "polymaker", name: "Polymaker" },
+  { id: "prusament", name: "Prusament" },
+  { id: "overture", name: "Overture" },
+  { id: "sunlu", name: "SUNLU" },
+  { id: "inland", name: "Inland" },
+  { id: "eryone", name: "Eryone" },
+  { id: "other", name: "Other" },
+];
 
 export const BASE_MATERIALS: MaterialType[] = [
   {
@@ -52,14 +70,9 @@ export const BASE_MATERIALS: MaterialType[] = [
 
 export const MATERIAL_MODIFIERS: MaterialModifier[] = [
   {
-    id: "carbon-fiber",
-    name: "Carbon Fiber",
-    suffix: "CF",
-  },
-  {
-    id: "silk",
-    name: "Silk",
-    suffix: "Silk",
+    id: "basic",
+    name: "Basic",
+    suffix: "",
   },
   {
     id: "matte",
@@ -67,14 +80,39 @@ export const MATERIAL_MODIFIERS: MaterialModifier[] = [
     suffix: "Matte",
   },
   {
+    id: "silk",
+    name: "Silk",
+    suffix: "Silk",
+  },
+  {
+    id: "marble",
+    name: "Marble",
+    suffix: "Marble",
+  },
+  {
     id: "glow-in-dark",
     name: "Glow-in-Dark",
     suffix: "Glow",
   },
   {
+    id: "sparkle",
+    name: "Sparkle",
+    suffix: "Sparkle",
+  },
+  {
+    id: "carbon-fiber",
+    name: "Carbon Fiber",
+    suffix: "CF",
+  },
+  {
     id: "wood-fill",
     name: "Wood-fill",
     suffix: "Wood",
+  },
+  {
+    id: "support",
+    name: "Support",
+    suffix: "Support",
   },
 ];
 
@@ -91,7 +129,7 @@ export function formatMaterial(
   const mat = BASE_MATERIALS.find((m) => m.id === material);
   const matName = mat ? mat.name : material.toUpperCase();
 
-  if (!modifier) {
+  if (!modifier || modifier === "basic") {
     return matName;
   }
 
@@ -114,7 +152,7 @@ export function getMaterialDisplay(
   const mat = BASE_MATERIALS.find((m) => m.id === material);
   const matName = mat ? mat.name : material.toUpperCase();
 
-  if (!modifier) {
+  if (!modifier || modifier === "basic") {
     return matName;
   }
 

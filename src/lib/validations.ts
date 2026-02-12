@@ -8,17 +8,12 @@ export type SpoolStatus = (typeof SPOOL_STATUSES)[number];
 export const createSpoolSchema = z.object({
   brand: z.string().min(1, "Brand is required").max(100),
   material: z.string().min(1, "Material is required").max(50),
-  modifier: z
-    .string()
-    .max(50)
-    .nullable()
-    .optional()
-    .transform((val) => val ?? null),
+  modifier: z.string().min(1, "Modifier is required").max(50),
   colorName: z.string().min(1, "Color name is required").max(100),
   colorHex: z
     .string()
     .regex(/^#[0-9A-Fa-f]{6}$/, "Must be a valid hex color"),
-  status: z.enum(SPOOL_STATUSES).default("sealed"),
+  status: z.enum(SPOOL_STATUSES).default("in_use"),
   initialWeight: z.number().int().positive().default(1000),
   purchaseDate: z
     .string()
