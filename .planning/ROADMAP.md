@@ -45,11 +45,11 @@ Plans:
   3. User can delete a spool from inventory with confirmation
   4. Initial weight defaults to 1000g when adding a spool
   5. Form validates required fields and prevents submission with missing data
-**Plans**: TBD
+**Plans:** 2 plans
 
 Plans:
-- [ ] 02-01: TBD
-- [ ] 02-02: TBD
+- [ ] 02-01-PLAN.md — SpoolForm component with Bambu Lab color picker and Add Spool page
+- [ ] 02-02-PLAN.md — Home page spool list, edit page, and delete with confirmation
 
 ### Phase 3: Visual Display
 **Goal**: User can see their inventory as visual cards with color swatches
@@ -91,7 +91,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Data Foundation | 3/3 | ✓ Complete | 2026-02-12 |
-| 2. Inventory Management | 0/TBD | Not started | - |
+| 2. Inventory Management | 0/2 | In Progress | - |
 | 3. Visual Display | 0/TBD | Not started | - |
 | 4. Discovery | 0/TBD | Not started | - |
 
