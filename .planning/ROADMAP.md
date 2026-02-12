@@ -12,7 +12,7 @@ This roadmap delivers a visual filament inventory management web app in four pha
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Data Foundation** - Database schema and static data ready
+- [x] **Phase 1: Data Foundation** - Database schema and static data ready *(completed 2026-02-12)*
 - [ ] **Phase 2: Inventory Management** - Full CRUD operations for spools
 - [ ] **Phase 3: Visual Display** - Card-based UI with color swatches
 - [ ] **Phase 4: Discovery** - Search and filter functionality
@@ -31,9 +31,9 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans:** 3 plans
 
 Plans:
-- [ ] 01-01-PLAN.md — Bootstrap Next.js with Drizzle/SQLite and define spool schema
-- [ ] 01-02-PLAN.md — Bambu Lab color palette and material type constants
-- [ ] 01-03-PLAN.md — Server actions for spool CRUD with Zod validation
+- [x] 01-01-PLAN.md — Bootstrap Next.js with Drizzle/SQLite and define spool schema
+- [x] 01-02-PLAN.md — Bambu Lab color palette and material type constants
+- [x] 01-03-PLAN.md — Server actions for spool CRUD with Zod validation
 
 ### Phase 2: Inventory Management
 **Goal**: User can create, edit, and delete filament spools with full field support
@@ -90,11 +90,11 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Data Foundation | 0/3 | Planned | - |
+| 1. Data Foundation | 3/3 | ✓ Complete | 2026-02-12 |
 | 2. Inventory Management | 0/TBD | Not started | - |
 | 3. Visual Display | 0/TBD | Not started | - |
 | 4. Discovery | 0/TBD | Not started | - |
 
 ---
 *Roadmap created: 2026-02-11*
-*Last updated: 2026-02-11*
+*Last updated: 2026-02-12*

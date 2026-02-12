@@ -5,7 +5,7 @@
 See: .planning/PROJECT.md (updated 2026-02-11)
 
 **Core value:** Quickly see what filament you have — by color, brand, and material — so you never guess what's on the shelf.
-**Current focus:** Phase 1 - Data Foundation
+**Current focus:** Phase 1 complete — ready for Phase 2 (Inventory Management)
 
 ## Current Position
 
