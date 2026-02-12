@@ -61,11 +61,10 @@ Plans:
   3. Each card shows brand, color name, purchase date, and weight
   4. Card layout is responsive and works on mobile devices
   5. Empty state displays helpful message when no spools exist
-**Plans**: TBD
+**Plans:** 1 plan
 
 Plans:
-- [ ] 03-01: TBD
-- [ ] 03-02: TBD
+- [ ] 03-01-PLAN.md — Extract SpoolCard component with prominent color-coded material badges
 
 ### Phase 4: Discovery
 **Goal**: User can find spools by filtering and searching inventory
@@ -92,7 +91,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 |-------|----------------|--------|-----------|
 | 1. Data Foundation | 3/3 | ✓ Complete | 2026-02-12 |
 | 2. Inventory Management | 2/2 | ✓ Complete | 2026-02-12 |
-| 3. Visual Display | 0/TBD | Not started | - |
+| 3. Visual Display | 0/1 | In progress | - |
 | 4. Discovery | 0/TBD | Not started | - |
 
 ---
