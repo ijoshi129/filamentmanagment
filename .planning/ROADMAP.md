@@ -77,11 +77,10 @@ Plans:
   3. User can search spools by text across brand, material, and color name
   4. Filters and search work together (combine constraints)
   5. Filter/search state persists during session (clearing form doesn't reset filters)
-**Plans**: TBD
+**Plans:** 1 plan
 
 Plans:
-- [ ] 04-01: TBD
-- [ ] 04-02: TBD
+- [ ] 04-01-PLAN.md — Text search bar and multi-select filter chips
 
 ## Progress
 
