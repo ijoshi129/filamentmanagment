@@ -1,0 +1,11 @@
+node_modules
+.next
+.git
+.claude
+.planning
+.env*.local
+.env
+sqlite.db
+sqlite.db-*
+*.tsbuildinfo
+next-env.d.ts

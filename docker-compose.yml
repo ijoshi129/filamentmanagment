@@ -1,0 +1,13 @@
+services:
+  filament-manager:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - filament-data:/data
+    environment:
+      - DATABASE_URL=/data/sqlite.db
+    restart: unless-stopped
+
+volumes:
+  filament-data:
