@@ -25,6 +25,7 @@ export function SpoolList({ spools }: SpoolListProps) {
   });
   const [showFilters, setShowFilters] = useState(false);
   const [sortOption, setSortOption] = useState<string>("most-recent");
+  const [searchQuery, setSearchQuery] = useState("");
 
   // Extract unique values for each filter
   const uniqueBrands = useMemo(
@@ -46,9 +47,18 @@ export function SpoolList({ spools }: SpoolListProps) {
       if (filters.brand !== "all" && s.brand !== filters.brand) return false;
       if (filters.material !== "all" && s.material !== filters.material) return false;
       if (filters.modifier !== "all" && (s.modifier || "") !== filters.modifier) return false;
+
+      // Text search
+      if (searchQuery.trim()) {
+        const q = searchQuery.toLowerCase();
+        const matchesSearch = [s.brand, s.material, s.modifier, s.colorName]
+          .some(field => field?.toLowerCase().includes(q));
+        if (!matchesSearch) return false;
+      }
+
       return true;
     });
-  }, [spools, filters]);
+  }, [spools, filters, searchQuery]);
 
   const sorted = useMemo(() => {
     const arr = [...filtered];
@@ -70,8 +80,10 @@ export function SpoolList({ spools }: SpoolListProps) {
 
   const activeFilterCount = Object.values(filters).filter((v) => v !== "all").length;
 
-  const clearFilters = () =>
+  const clearFilters = () => {
     setFilters({ status: "all", brand: "all", material: "all", modifier: "all" });
+    setSearchQuery("");
+  };
 
   const updateFilter = (key: keyof Filters, value: string) =>
     setFilters((prev) => ({ ...prev, [key]: value }));
@@ -131,6 +143,39 @@ export function SpoolList({ spools }: SpoolListProps) {
 
   return (
     <div>
+      {/* Search bar */}
+      <div style={{ position: "relative", marginBottom: "12px" }}>
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 16 16"
+          fill="none"
+          stroke="#9ca3af"
+          strokeWidth="1.5"
+          style={{ position: "absolute", left: "12px", top: "50%", transform: "translateY(-50%)", pointerEvents: "none" }}
+        >
+          <circle cx="7" cy="7" r="5" />
+          <path d="M11 11l3.5 3.5" strokeLinecap="round" />
+        </svg>
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Search by color, brand, or material..."
+          style={{
+            width: "100%",
+            padding: "8px 12px 8px 36px",
+            borderRadius: "10px",
+            border: "1px solid #d1d5db",
+            fontSize: "14px",
+            outline: "none",
+            transition: "border-color 0.15s ease"
+          }}
+          onFocus={(e) => e.target.style.borderColor = "#3b82f6"}
+          onBlur={(e) => e.target.style.borderColor = "#d1d5db"}
+        />
+      </div>
+
       {/* Filter toggle */}
       <div className="flex items-center gap-3 mb-4">
         <button
@@ -310,16 +355,18 @@ export function SpoolList({ spools }: SpoolListProps) {
             <path d="M15 20h10M20 15v10" stroke="#9ca3af" strokeWidth="2" strokeLinecap="round" />
           </svg>
           <p className="text-base font-medium text-gray-600 mb-1">
-            No spools match your filters
+            {searchQuery.trim() ? "No spools match your search or filters" : "No spools match your filters"}
           </p>
           <p className="text-sm text-gray-400 mb-4">
-            Try adjusting your filters or clear them to see all spools
+            {searchQuery.trim()
+              ? "Try adjusting your search or filters to see more results"
+              : "Try adjusting your filters or clear them to see all spools"}
           </p>
           <button
             onClick={clearFilters}
             className="text-blue-600 font-medium text-sm hover:underline"
           >
-            Clear filters
+            {searchQuery.trim() ? "Clear search and filters" : "Clear filters"}
           </button>
         </div>
       ) : (
