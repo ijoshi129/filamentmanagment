@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Data Foundation** - Database schema and static data ready *(completed 2026-02-12)*
 - [x] **Phase 2: Inventory Management** - Full CRUD operations for spools *(completed 2026-02-12)*
 - [x] **Phase 3: Visual Display** - Card-based UI with color swatches *(completed 2026-02-12)*
-- [ ] **Phase 4: Discovery** - Search and filter functionality
+- [x] **Phase 4: Discovery** - Search and filter functionality *(completed 2026-02-12)*
 
 ## Phase Details
 
@@ -80,7 +80,7 @@ Plans:
 **Plans:** 1 plan
 
 Plans:
-- [ ] 04-01-PLAN.md — Text search bar and multi-select filter chips
+- [x] 04-01-PLAN.md — Text search bar and multi-select filter chips
 
 ## Progress
 
@@ -92,8 +92,8 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | 1. Data Foundation | 3/3 | ✓ Complete | 2026-02-12 |
 | 2. Inventory Management | 2/2 | ✓ Complete | 2026-02-12 |
 | 3. Visual Display | 2/2 | ✓ Complete | 2026-02-12 |
-| 4. Discovery | 0/TBD | Not started | - |
+| 4. Discovery | 1/1 | ✓ Complete | 2026-02-12 |
 
 ---
 *Roadmap created: 2026-02-11*
-*Last updated: 2026-02-12 (Phase 3 complete)*
+*Last updated: 2026-02-12 (Phase 4 complete — all phases done)*
