@@ -6,10 +6,10 @@ import type { Spool } from "@/db/schema";
 import { SpoolCard } from "@/components/SpoolCard";
 
 type Filters = {
-  status: string;
-  brand: string;
-  material: string;
-  modifier: string;
+  status: Set<string>;
+  brand: Set<string>;
+  material: Set<string>;
+  modifier: Set<string>;
 };
 
 type SpoolListProps = {
@@ -18,10 +18,10 @@ type SpoolListProps = {
 
 export function SpoolList({ spools }: SpoolListProps) {
   const [filters, setFilters] = useState<Filters>({
-    status: "all",
-    brand: "all",
-    material: "all",
-    modifier: "all",
+    status: new Set(),
+    brand: new Set(),
+    material: new Set(),
+    modifier: new Set(),
   });
   const [showFilters, setShowFilters] = useState(false);
   const [sortOption, setSortOption] = useState<string>("most-recent");
@@ -43,10 +43,10 @@ export function SpoolList({ spools }: SpoolListProps) {
 
   const filtered = useMemo(() => {
     return spools.filter((s) => {
-      if (filters.status !== "all" && s.status !== filters.status) return false;
-      if (filters.brand !== "all" && s.brand !== filters.brand) return false;
-      if (filters.material !== "all" && s.material !== filters.material) return false;
-      if (filters.modifier !== "all" && (s.modifier || "") !== filters.modifier) return false;
+      if (filters.status.size > 0 && !filters.status.has(s.status)) return false;
+      if (filters.brand.size > 0 && !filters.brand.has(s.brand)) return false;
+      if (filters.material.size > 0 && !filters.material.has(s.material)) return false;
+      if (filters.modifier.size > 0 && !filters.modifier.has(s.modifier || "")) return false;
 
       // Text search
       if (searchQuery.trim()) {
@@ -78,15 +78,43 @@ export function SpoolList({ spools }: SpoolListProps) {
     }
   }, [filtered, sortOption]);
 
-  const activeFilterCount = Object.values(filters).filter((v) => v !== "all").length;
+  const activeFilterCount = Object.values(filters).filter((s) => s.size > 0).length;
 
   const clearFilters = () => {
-    setFilters({ status: "all", brand: "all", material: "all", modifier: "all" });
+    setFilters({
+      status: new Set(),
+      brand: new Set(),
+      material: new Set(),
+      modifier: new Set(),
+    });
     setSearchQuery("");
   };
 
-  const updateFilter = (key: keyof Filters, value: string) =>
-    setFilters((prev) => ({ ...prev, [key]: value }));
+  const toggleFilter = (key: keyof Filters, value: string) => {
+    setFilters((prev) => {
+      const newSet = new Set(prev[key]);
+      if (newSet.has(value)) {
+        newSet.delete(value);
+      } else {
+        newSet.add(value);
+      }
+      return { ...prev, [key]: newSet };
+    });
+  };
+
+  // Helper functions for display names
+  const getStatusDisplay = (status: string) => {
+    switch (status) {
+      case "sealed": return "Sealed";
+      case "in_use": return "Open";
+      case "empty": return "Empty";
+      default: return status;
+    }
+  };
+
+  const getModifierDisplay = (modifier: string) => {
+    return modifier.charAt(0).toUpperCase() + modifier.slice(1).replace(/-/g, " ");
+  };
 
   if (spools.length === 0) {
     return (
@@ -262,9 +290,6 @@ export function SpoolList({ spools }: SpoolListProps) {
       {showFilters && (
         <div
           style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))",
-            gap: "12px",
             padding: "16px",
             marginBottom: "20px",
             borderRadius: "12px",
@@ -272,68 +297,148 @@ export function SpoolList({ spools }: SpoolListProps) {
             backgroundColor: "#fafafa",
           }}
         >
-          <div>
-            <label style={{ display: "block", fontSize: "12px", fontWeight: 600, color: "#6b7280", marginBottom: "4px", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+          {/* Status chips */}
+          <div style={{ marginBottom: "16px" }}>
+            <label style={{ display: "block", fontSize: "12px", fontWeight: 600, color: "#6b7280", marginBottom: "8px", textTransform: "uppercase", letterSpacing: "0.05em" }}>
               Status
             </label>
-            <select
-              value={filters.status}
-              onChange={(e) => updateFilter("status", e.target.value)}
-              style={selectStyle}
-            >
-              <option value="all">All</option>
-              <option value="sealed">Sealed</option>
-              <option value="in_use">Open</option>
-              <option value="empty">Empty</option>
-            </select>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+              {["sealed", "in_use", "empty"].map((status) => {
+                const isSelected = filters.status.has(status);
+                return (
+                  <button
+                    key={status}
+                    onClick={() => toggleFilter("status", status)}
+                    style={{
+                      padding: "4px 12px",
+                      borderRadius: "999px",
+                      fontSize: "13px",
+                      border: isSelected ? "none" : "1px solid #d1d5db",
+                      backgroundColor: isSelected ? "#2563eb" : "#ffffff",
+                      color: isSelected ? "#ffffff" : "#374151",
+                      cursor: "pointer",
+                      transition: "all 0.15s ease",
+                    }}
+                    onMouseEnter={(e) => {
+                      if (!isSelected) e.currentTarget.style.backgroundColor = "#f9fafb";
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!isSelected) e.currentTarget.style.backgroundColor = "#ffffff";
+                    }}
+                  >
+                    {getStatusDisplay(status)}
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
-          <div>
-            <label style={{ display: "block", fontSize: "12px", fontWeight: 600, color: "#6b7280", marginBottom: "4px", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+          {/* Brand chips */}
+          <div style={{ marginBottom: "16px" }}>
+            <label style={{ display: "block", fontSize: "12px", fontWeight: 600, color: "#6b7280", marginBottom: "8px", textTransform: "uppercase", letterSpacing: "0.05em" }}>
               Brand
             </label>
-            <select
-              value={filters.brand}
-              onChange={(e) => updateFilter("brand", e.target.value)}
-              style={selectStyle}
-            >
-              <option value="all">All</option>
-              {uniqueBrands.map((b) => (
-                <option key={b} value={b}>{b}</option>
-              ))}
-            </select>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+              {uniqueBrands.map((brand) => {
+                const isSelected = filters.brand.has(brand);
+                return (
+                  <button
+                    key={brand}
+                    onClick={() => toggleFilter("brand", brand)}
+                    style={{
+                      padding: "4px 12px",
+                      borderRadius: "999px",
+                      fontSize: "13px",
+                      border: isSelected ? "none" : "1px solid #d1d5db",
+                      backgroundColor: isSelected ? "#2563eb" : "#ffffff",
+                      color: isSelected ? "#ffffff" : "#374151",
+                      cursor: "pointer",
+                      transition: "all 0.15s ease",
+                    }}
+                    onMouseEnter={(e) => {
+                      if (!isSelected) e.currentTarget.style.backgroundColor = "#f9fafb";
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!isSelected) e.currentTarget.style.backgroundColor = "#ffffff";
+                    }}
+                  >
+                    {brand}
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
-          <div>
-            <label style={{ display: "block", fontSize: "12px", fontWeight: 600, color: "#6b7280", marginBottom: "4px", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+          {/* Material chips */}
+          <div style={{ marginBottom: "16px" }}>
+            <label style={{ display: "block", fontSize: "12px", fontWeight: 600, color: "#6b7280", marginBottom: "8px", textTransform: "uppercase", letterSpacing: "0.05em" }}>
               Material
             </label>
-            <select
-              value={filters.material}
-              onChange={(e) => updateFilter("material", e.target.value)}
-              style={selectStyle}
-            >
-              <option value="all">All</option>
-              {uniqueMaterials.map((m) => (
-                <option key={m} value={m}>{m.toUpperCase()}</option>
-              ))}
-            </select>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+              {uniqueMaterials.map((material) => {
+                const isSelected = filters.material.has(material);
+                return (
+                  <button
+                    key={material}
+                    onClick={() => toggleFilter("material", material)}
+                    style={{
+                      padding: "4px 12px",
+                      borderRadius: "999px",
+                      fontSize: "13px",
+                      border: isSelected ? "none" : "1px solid #d1d5db",
+                      backgroundColor: isSelected ? "#2563eb" : "#ffffff",
+                      color: isSelected ? "#ffffff" : "#374151",
+                      cursor: "pointer",
+                      transition: "all 0.15s ease",
+                    }}
+                    onMouseEnter={(e) => {
+                      if (!isSelected) e.currentTarget.style.backgroundColor = "#f9fafb";
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!isSelected) e.currentTarget.style.backgroundColor = "#ffffff";
+                    }}
+                  >
+                    {material.toUpperCase()}
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
+          {/* Type (modifier) chips */}
           <div>
-            <label style={{ display: "block", fontSize: "12px", fontWeight: 600, color: "#6b7280", marginBottom: "4px", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+            <label style={{ display: "block", fontSize: "12px", fontWeight: 600, color: "#6b7280", marginBottom: "8px", textTransform: "uppercase", letterSpacing: "0.05em" }}>
               Type
             </label>
-            <select
-              value={filters.modifier}
-              onChange={(e) => updateFilter("modifier", e.target.value)}
-              style={selectStyle}
-            >
-              <option value="all">All</option>
-              {uniqueModifiers.map((m) => (
-                <option key={m} value={m}>{m.charAt(0).toUpperCase() + m.slice(1).replace(/-/g, " ")}</option>
-              ))}
-            </select>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+              {uniqueModifiers.map((modifier) => {
+                const isSelected = filters.modifier.has(modifier);
+                return (
+                  <button
+                    key={modifier}
+                    onClick={() => toggleFilter("modifier", modifier)}
+                    style={{
+                      padding: "4px 12px",
+                      borderRadius: "999px",
+                      fontSize: "13px",
+                      border: isSelected ? "none" : "1px solid #d1d5db",
+                      backgroundColor: isSelected ? "#2563eb" : "#ffffff",
+                      color: isSelected ? "#ffffff" : "#374151",
+                      cursor: "pointer",
+                      transition: "all 0.15s ease",
+                    }}
+                    onMouseEnter={(e) => {
+                      if (!isSelected) e.currentTarget.style.backgroundColor = "#f9fafb";
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!isSelected) e.currentTarget.style.backgroundColor = "#ffffff";
+                    }}
+                  >
+                    {getModifierDisplay(modifier)}
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </div>
       )}
