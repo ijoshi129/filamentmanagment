@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import type { Spool } from "@/db/schema";
-import { formatMaterial } from "@/lib/materials";
+import { formatMaterial } from "@/lib/materials-format";
 import { DeleteSpoolButton } from "@/components/DeleteSpoolButton";
 
 const STATUS_LABELS: Record<string, string> = {
@@ -24,6 +24,10 @@ const MATERIAL_BADGE_COLORS: Record<string, { bg: string; text: string }> = {
   tpu: { bg: "bg-purple-100", text: "text-purple-800" },
   asa: { bg: "bg-amber-100", text: "text-amber-800" },
   nylon: { bg: "bg-pink-100", text: "text-pink-800" },
+  pc: { bg: "bg-cyan-100", text: "text-cyan-800" },
+  pa6: { bg: "bg-rose-100", text: "text-rose-800" },
+  paht: { bg: "bg-red-100", text: "text-red-800" },
+  ppa: { bg: "bg-indigo-100", text: "text-indigo-800" },
 };
 
 type SpoolCardProps = {
@@ -90,7 +94,7 @@ export function SpoolCard({ spool }: SpoolCardProps) {
             />
             {STATUS_LABELS[spool.status] || spool.status}
           </span>
-          <span>{spool.initialWeight}g</span>
+          {spool.initialWeight && <span>{spool.initialWeight}g</span>}
           {spool.purchaseDate && <span>{spool.purchaseDate}</span>}
         </div>
 

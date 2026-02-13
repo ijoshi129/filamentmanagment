@@ -24,6 +24,7 @@ export function SpoolList({ spools }: SpoolListProps) {
     modifier: "all",
   });
   const [showFilters, setShowFilters] = useState(false);
+  const [sortOption, setSortOption] = useState<string>("most-recent");
 
   // Extract unique values for each filter
   const uniqueBrands = useMemo(
@@ -48,6 +49,24 @@ export function SpoolList({ spools }: SpoolListProps) {
       return true;
     });
   }, [spools, filters]);
+
+  const sorted = useMemo(() => {
+    const arr = [...filtered];
+    switch (sortOption) {
+      case "most-recent":
+        return arr.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+      case "oldest":
+        return arr.sort((a, b) => a.createdAt.localeCompare(b.createdAt));
+      case "by-material":
+        return arr.sort((a, b) => a.material.localeCompare(b.material) || a.colorName.localeCompare(b.colorName));
+      case "by-color-family":
+        return arr.sort((a, b) => a.colorHex.localeCompare(b.colorHex) || a.colorName.localeCompare(b.colorName));
+      case "by-brand":
+        return arr.sort((a, b) => a.brand.localeCompare(b.brand) || a.colorName.localeCompare(b.colorName));
+      default:
+        return arr;
+    }
+  }, [filtered, sortOption]);
 
   const activeFilterCount = Object.values(filters).filter((v) => v !== "all").length;
 
@@ -159,6 +178,24 @@ export function SpoolList({ spools }: SpoolListProps) {
           </button>
         )}
 
+        {/* Sort dropdown */}
+        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+          <label style={{ fontSize: "13px", fontWeight: 500, color: "#6b7280" }}>
+            Sort by:
+          </label>
+          <select
+            value={sortOption}
+            onChange={(e) => setSortOption(e.target.value)}
+            style={selectStyle}
+          >
+            <option value="most-recent">Most Recent</option>
+            <option value="oldest">Oldest First</option>
+            <option value="by-material">By Material</option>
+            <option value="by-color-family">By Color Family</option>
+            <option value="by-brand">By Brand</option>
+          </select>
+        </div>
+
         <span className="text-sm text-gray-400 ml-auto">
           {filtered.length} of {spools.length} spool{spools.length !== 1 ? "s" : ""}
         </span>
@@ -251,7 +288,7 @@ export function SpoolList({ spools }: SpoolListProps) {
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filtered.map((spool) => (
+          {sorted.map((spool) => (
             <SpoolCard key={spool.id} spool={spool} />
           ))}
         </div>
